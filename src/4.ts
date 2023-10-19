@@ -6,7 +6,7 @@ class Key {
         this.signature = Math.random()
     }
 
-    getSignature() {
+    getSignature():number {
         return this.signature
     }
 }
@@ -18,7 +18,7 @@ class Person {
         this.key = key
     }
     
-    getKey() {
+    getKey():Key {
         return this.key
     }
 
@@ -28,7 +28,12 @@ abstract class House {
     public door: boolean = false
     protected key: Key
 
-private tenants: Person[] = []
+    private tenants: Person[] = []
+    
+    
+    constructor(key: Key) {
+        this.key = key
+    }
 
     comeIn(tenant: Person) {
         if (this.door) {
@@ -40,14 +45,9 @@ private tenants: Person[] = []
 }
 
 class MyHouse extends House {
-
-    constructor(key: Key) {
-        super()
-        this.key = key
-    }
-    
+   
     openDoor(key: Key): void {
-        if (key === this.key) {
+        if (this.key.getSignature() === key.getSignature()) {
             this.door = true
         }
     }
@@ -58,6 +58,8 @@ const key = new Key();
 
 const house = new MyHouse(key);
 const person = new Person(key);
+console.log(house, person);
+
 
 house.openDoor(person.getKey());
 
